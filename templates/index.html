@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+
+
+
+
+<nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <super><a class="navbar-brand" style="font-family: 'Pacifico', cursive;">My Notes</a></super></super>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+      	<form action="/logout/" method="POST">
+      	{% csrf_token %}
+        <button type='submit' class="btn btn-danger btn-sm" name="logout" style="width:90px" class="icon-button" value="{{e.id}}" style="font-family: 'Pacifico', cursive;">
+           Log out
+        </button>
+        </form>
+        <br>
+        <form action="/addnotesView/" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-sm" class="icon-button" style="font-family: 'Pacifico', cursive;">
+           Add a note
+        </button>
+        </form>
+      </ul>
+    </div>
+  </nav>
+
+<br><br>
+<div class="row">
+{% if notes %}
+
+   {% for e in notes %}
+  <div class="col-sm-6">
+  <div class="card img-fluid" style="width:500px">
+    <img class="card-img-top" src="http://pngimg.com/uploads/sticky_note/sticky_note_PNG18915.png" alt="Card image" style="width:100%">
+    <div class="card-img-overlay">
+
+      <h4 class="card-title"><br><br>{{ e.title }} </h4>
+      <p class="card-text" style="width:400px">
+      {{ e.content }}
+      </p>
+
+
+      <form action="/updateNote/" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary" name="update" value="{{e.id}}">Update</button>
+      </form>
+       &nbsp;  
+      <form action="/deleteNote/" method="POST">
+      {% csrf_token %}
+      <button type='submit' class="btn btn-danger" name="delete" value="{{e.id}}">Delete</button>
+      </form>
+      <br><br>
+      <br>
+      <div class="card-img-bottom" style="width:400px">Last updated on : {{ e.date_of_creation }}</div>
+    </div>
+  </div>
+  </div>
+  {% endfor %}
+{% else %}
+   There are no notes yet. Create one!
+{% endif %}
+ </div>
+</div>
+
+</body>
+<style type="text/css">
+	.icon-button {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: 0;
+    background: transparent;
+}
+</style>
+</html>
